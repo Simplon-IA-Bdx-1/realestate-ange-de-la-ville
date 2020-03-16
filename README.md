@@ -73,7 +73,6 @@ idannonce |  int  |
 |     Application Flask    |      [App](https://github.com/Simplon-IA-Bdx-1/realestate-ange-de-la-ville/tree/master/app)      |     :---:      |     Application web et API      |
 |     Class Annonce    |      [Class Annonce](https://github.com/Simplon-IA-Bdx-1/realestate-ange-de-la-ville/blob/master/app/annonce.py)      |     :---:      |     Class annonce pour l'import en BDD     |
 |     Class Bien   |      [Class Bien](https://github.com/Simplon-IA-Bdx-1/realestate-ange-de-la-ville/blob/master/app/bien.py)      |     :---:      |     Class protegée Bien pour la prédiction     |
-|     :---:    |      :---:      |     :---:      |     Class protegé Bien pour la prédiction      |
 
 
 ## Organisation de l'application Flask
