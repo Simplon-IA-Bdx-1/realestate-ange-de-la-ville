@@ -8,35 +8,62 @@ Dans un premier temps, nous nous sommes concentrées sur les maisons et les appa
 Nous avons décidé de scrapper le site se loger.com, ce dernier ayant des protection anti-scrapping nous avons utilisé sélénium afin de pouvoir imiter le comportement d'un utilisateur humain afin de ne pas être repérer.
 Nous avons ainsi rassemblé les caractéristiques de 847 maisons et 728 appartements sur Bordeaux.
 Nous avons ensuite construit le modèle regressor de sklearn en utilisant un pipeline pour la préparation des données.
+Le modèle a ensuite été exporter sous fourme de pickle et déployer dans une application Flask.
+On utilise SQLite3 pour avoir une BDD sous forme de fichier .db directement sur le site. 
+L'application flask permet d'obtenir le prix estimé d'un bien immobilier sur Bordeaux. 
+La prédiction peut être obtenu de deux manières :
+* Via un formulaire web
+* Au format json via une API (Les informations sur le bien doivent être fournis au format json) 
 
-## Features
+## Répartission des tâches 
+Avant le premier mois en entreprise :
+* Maud : README + modele
+* Christophe : Scrapping
+* Maxime & Corantin : BDD
 
-|   Features   |  type  | 
-|     :---:    |      :---:      |
+Pour la suite :
+
+* Maxime : optimisation du scrapping et enregistrement en BDD
+* Maud : application Flask et cURL
+* Corantin : Azure Function
+* Christophe : Scrapping et Tarifs Azure
+
+## Features modèle et prédiction
+
+|   Features   |  type  |   Valeurs suporté   |
+|     :---:    |      :---:      |      :---:      |
 idannonce |  int  |
-| typedebien |  object  |
-| typedetransaction |  object  |
-| codepostal |  int  |
+| typedebien |  object  | "Appartement",  "Maison / Villa" |
+| typedetransaction |  object  | "['vente de prestige']",  "['vente']" |
+| codepostal |  int  |  33000, 33100, 33200, 33300, 33700, 33800 |
 | ville |  object  |
-| etage |  int  |
-| idtypechauffage |  object  |
-| idtypecuisine |  object  |
-| naturebien |  int  |
-| si_balcon |  int  |
-| nb_chambres |  int  |
-| nb_pieces |  int  |
-| si_sdbain |  int  |
-| si_sdEau |  int |
+| etage |  int  | 0 > ... < 30 |
+| idtypechauffage |  object  | "individuel", "individuel électrique", "individuel électrique radiateur", "gaz","individuel électrique","mixte","électrique", "individuel gaz sol", "gaz radiateur", "électrique mixte" |  
+| idtypecuisine |  object  | "aucune", "coin cuisine", "équipée", "séparée", "séparée équipée", "américaine", "américaine équipée" |
+| naturebien |  int  | 0, 1 |
+| si_balcon |  int  | 0, 1 |
+| nb_chambres |  int  | 0 > ... < 10 |
+| nb_pieces |  int  | 0 > ... < 10 |
+| si_sdbain |  int  | 0, 1 |
+| si_sdEau |  int | 0, 1 |
 | nb_photos |  int  |
 | prix |  int  |
-| surface |  int  |
+| surface |  int  | 0 > ... < 900 |
 | dpeL |  int  |
 | dpeC|  int  |
 
+## Librairie
 
 
-
-
+|   LIB   |  Version  |
+|     :---:    |      :---:      |
+|     sqlite    |      3.31.1      |
+|     Scikit-learn    |      0.21.3     |
+|     Flask    |   1.1.1 |
+|     beautifulsoup4    |      4.8.2      |
+|     python    |      3.4.6      |
+|     requests   |      2.22.0      |
+|     selenium    |      3.141.0      |
 
 ## Organisation du projet
 
@@ -44,7 +71,28 @@ idannonce |  int  |
 |     :---:    |      :---:      |     :---:      |     :---:      |
 | Scrapping de SeLoger.com   | [Scrapping](https://github.com/Simplon-IA-Bdx-1/realestate-ange-de-la-ville/blob/master/scraperseloger.ipynb) |   [Scrapping](http://localhost:8888/notebooks/scraperseloger.ipynb)  | Scrapping et utilisation de Sélénium | 
 | Création du modèle  | [Regressor sklearn](https://github.com/Simplon-IA-Bdx-1/realestate-ange-de-la-ville/blob/master/model.ipynb)|   [Regressor sklearn](http://localhost:8888/notebooks/model.ipynb)  | Modèle Regressor avec pipeline pour la préparation des données | 
+|     Application Flask    |      [App](https://github.com/Simplon-IA-Bdx-1/realestate-ange-de-la-ville/tree/master/app)      |     :---:      |     Application web et API      |
+|     Class Annonce    |      [Class Annonce](https://github.com/Simplon-IA-Bdx-1/realestate-ange-de-la-ville/blob/master/app/annonce.py)      |     :---:      |     Class annonce pour l'import en BDD     |
+|     Class Bien   |      [Class Bien](https://github.com/Simplon-IA-Bdx-1/realestate-ange-de-la-ville/blob/master/app/bien.py)      |     :---:      |     Class protegée Bien pour la prédiction     |
 
+
+
+## Organisation de l'application Flask
+
+* Prédiction : [http://localhost:5000/predict](http://localhost:5000/predict)
+* Création de la table SeLoger : [http://localhost:5000/create-table](http://localhost:5000/create-table)
+* Import des données depuis csv : [http://localhost:5000/import](http://localhost:5000/import)
+* Affichage en json des annonce présente dans la Base de Données  : [http://localhost:5000/get](http://localhost:5000/get)
+
+
+## Exemple de requête cURL
+
+Pour une prédiction les information du bien doivent être fournis au format json.
+Fichier exemple : [data.json](https://github.com/Simplon-IA-Bdx-1/realestate-ange-de-la-ville/blob/master/app/data.json)
+
+```bash
+ $ curl -d "@data.json" -X POST http://localhost:5000/predict -H "Content-Type: application/json"
+```
 
 
 ## Installation
