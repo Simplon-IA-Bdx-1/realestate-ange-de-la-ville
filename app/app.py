@@ -4,6 +4,47 @@ import pickle
 import webbrowser
 import pandas as pd 
 import json
+import csv
+from annonce import Annonce
+from bien import Bien
+
+
+# Config options - Make sure you created a 'config.py' file.
+#app.config.from_object('config')
+# To get one variable, tape app.config['MY_VARIABLE']
+
+
+
+# function pour la base de données
+
+import sqlite3
+from flask import g
+
+DATABASE = 'app.db'
+
+def get_db():
+    db = getattr(g, '_database', None)
+    if db is None:
+        db = g._database = sqlite3.connect(DATABASE)
+    return db
+
+#@app.teardown_appcontext
+def close_connection(exception):
+    db = getattr(g, '_database', None)
+    if db is not None:
+        db.close()
+
+def query_db(query, args=(), one=False):
+    cur = get_db().execute(query, args)
+    rv = cur.fetchall()
+    cur.close()
+    return (rv[0] if rv else None) if one else rv
+
+
+
+
+
+# function pour la base de données
 
 app = Flask(__name__)
 model = pickle.load(open('model_maisons_apparts.pickle', 'rb'))
@@ -28,59 +69,25 @@ def predict():
     # Get form answers of the user
     
     bien_features = {}
-    error = []
-    num_features = {'etage' : 30, 'si_balcon': 1, 'nb_chambres': 10,'nb_pieces': 10, 'si_sdbain': 1, 'si_sdEau': 1, 'surface': 900}
-    features = list(num_features.keys())
-    for feature in features :
-        value = int(data[feature])
-        if (value >= 0) | (value <= num_features[feature]) :
-                    
-            bien_features[feature] = [value]
-        else:
-            error.append(feature)
-            bien_features[0]
-            
-    if (data['typedebien'] == "Appartement") | (data['typedebien'] == "Maison / Villa") :
-        bien_features['typedebien'] = [data['typedebien']]
-    else:
-        error.append('typedebien')
-        bien_features['typedebien'] = "Appartement"
+    
+    bien = Bien() 
+
+    bien_features['etage'] = bien.set_etage(data['etage'])
+    bien_features['si_balcon']  = bien.set_etage(data['si_balcon'])
+    bien_features['nb_chambres'] = bien.set_si_balcon(data['nb_chambres'])
+    bien_features['nb_pieces'] = bien.set_nb_pieces(data['nb_pieces'])
+    bien_features['si_sdbain'] = bien.set_si_sdbain(data['si_sdbain'])
+    bien_features['si_sdEau'] = bien.set_si_sdeau(data['si_sdEau'])
+    bien_features['surface'] = bien.set_surface(data['surface'])
+    bien_features['typedebien'] = bien.set_typedebien(data['typedebien'])
+    bien_features['typedetransaction'] = bien.set_typedetransaction(data['typedetransaction'])
+    bien_features['idtypechauffage'] = bien.set_idtypechauffage(data['idtypechauffage'])
+    bien_features['idtypecuisine'] = bien.set_idtypecuisine(data['idtypecuisine'])
+    bien_features['codepostal'] = bien.set_codepostal(data['codepostal'])
+    
 
 
-    if (data['typedetransaction'] == "['vente de prestige']") | (data['typedetransaction'] == "['vente']") :
-        bien_features['typedetransaction'] = [data['typedetransaction']]
-    else:
-        error.append('typedetransaction')
-        bien_features['typedetransaction'] = "['vente']"
-
-    if (data['idtypechauffage'] == "individuel") | (data['idtypechauffage'] == "individuel électrique") | (data['idtypechauffage'] == "individuel électrique radiateur") | (data['idtypechauffage'] == "gaz") | (data['idtypechauffage'] == "individuel électrique") | (data['idtypechauffage'] == "mixte") | (data['idtypechauffage'] == "électrique") | (data['idtypechauffage'] == "individuel gaz sol") | (data['idtypechauffage'] == "gaz radiateur") | (data['idtypechauffage'] == "électrique mixte") :    
-        bien_features['idtypechauffage'] = [data['idtypechauffage']]
-    else:
-        error.append('idtypechauffage')
-        bien_features['idtypechauffage'] = "individuel"
-        
-        
-
-    if (data['idtypecuisine'] == "aucune") | (data['idtypecuisine'] == "coin cuisine") | (data['idtypecuisine'] == "équipée") | (data['idtypecuisine'] == "séparée") | (data['idtypecuisine'] == "	séparée équipée") | (data['idtypecuisine'] == "américaine") | (data['idtypecuisine'] == "américaine équipée") :
-        bien_features['idtypecuisine'] = [data['idtypecuisine']]
-        
-
-
-    else:
-        error.append('idtypecuisine')
-        bien_features['idtypecuisine'] = "aucune"
-    # return jsonify(data)
-    # exit()    
-   
-    if (data['codepostal'] == 33000) | (data['codepostal'] == 33100) | (data['codepostal'] == 33200) | (data['codepostal'] == 33300) | (data['codepostal'] == 33700) | (data['codepostal'] == 33800) :
-        bien_features['codepostal'] = [int(data['codepostal'])]  
-        
-    else:
-        error.append('codepostal')
-        bien_features['codepostal'] = 33000
-
-        
-    final_features = pd.DataFrame.from_dict(bien_features)
+    final_features = pd.DataFrame([bien_features])
     f = final_features[['typedebien', 'typedetransaction', 'codepostal', 'etage', 'idtypechauffage', 'idtypecuisine', 'si_balcon', 'nb_chambres', 'nb_pieces', 'si_sdbain', 'si_sdEau', 'surface']]
 
 
@@ -100,10 +107,130 @@ def predict():
         dictionnaire = {
         'type': 'Prédiction bien immobilier',
     
-        'prix prédit': output
+        'prix': output
         }
         return jsonify(dictionnaire)
+
+
+@app.route('/create-table',methods=['GET'])
+def create_seloger_table():
     
+    cur = get_db().cursor()
+    
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS  `SeLoger` (
+        `idannonce` INT NOT NULL,
+        `typedebien` VARCHAR(255) NOT NULL,
+        `typedetransaction` VARCHAR(255) NOT NULL,
+        `codepostal` INT NOT NULL,
+        `ville` VARCHAR(255) NOT NULL,
+        `etage` INT NOT NULL,
+        `idtypechauffage` VARCHAR(255) NOT NULL,
+        `idtypedecuisine` VARCHAR(255) NOT NULL,
+        `naturebien` INT NOT NULL,
+        `si_balcon` INT NOT NULL,
+        `nb_chambres` INT NOT NULL,
+        `nb_pieces` INT NOT NULL,
+        `si_sdbain` INT NOT NULL,
+        `si_sdEau` INT NOT NULL,
+        `nb_photos` INT NOT NULL,
+        `prix` INT NOT NULL,
+        `surface` INT NOT NULL
+    );""")
+    cur.close()
+    close_connection(cur)
+
+
+    return render_template('index.html', prediction_text='La table est prête à être utilisée', prediction_prix= f'Have Fun')
+
+
+
+
+
+@app.route('/import',methods=['GET'])
+def import_csv():
+    
+    # data = request.get_data()
+
+    # r = {}
+    # b = []
+    # i=1
+
+    # b.append(str(data))
+    # return jsonify(b)
+
+
+    result = {}
+    #create_seloger_table()
+    conn = get_db()
+    cur = conn.cursor()
+    with open('biens_features.csv', 'r', encoding='utf-8', newline='\n') as csvfile:
+                     reader = csv.DictReader(csvfile, delimiter=';')
+                     for row in reader:
+                        annonce = Annonce(
+                                idannonce = row['idannonce'],
+                                typedebien = row['typedebien'],
+                                typedetransaction = row['typedetransaction'],
+                                codepostal = row['codepostal'],
+                                ville = row['ville'],
+                                etage = row['etage'],
+                                idtypechauffage = row['idtypechauffage'],
+                                idtypecuisine = row['idtypecuisine'],
+                                naturebien = row['naturebien'],
+                                si_balcon = row['si_balcon'],
+                                nb_chambres = row['nb_chambres'],
+                                nb_pieces = row['nb_pieces'],
+                                si_sdbain = row['si_sdbain'],
+                                si_sdEau = row['si_sdEau'],
+                                nb_photos =row['nb_photos'],
+                                prix = row['prix'],
+                                surface = row['surface']
+
+                         )
+
+                         
+                        
+                        data = (annonce.idannonce, annonce.typedebien, annonce.typedetransaction, annonce.codepostal, annonce.ville, annonce.etage, annonce.idtypechauffage, annonce.idtypecuisine, annonce.naturebien, annonce.si_balcon, annonce.nb_chambres, annonce.nb_pieces, annonce.si_sdbain, annonce.si_sdEau, annonce.nb_photos, annonce.prix, annonce.surface)
+
+                        cursor = cur.execute("""insert into SeLoger (idannonce, 
+                                                            typedebien, 
+                                                            typedetransaction, 
+                                                            codepostal, 
+                                                            ville, 
+                                                            etage, 
+                                                            idtypechauffage, 
+                                                            idtypedecuisine, 
+                                                            naturebien, 
+                                                            si_balcon, 
+                                                            nb_chambres, 
+                                                            nb_pieces, 
+                                                            si_sdbain, 
+                                                            si_sdEau, 
+                                                            nb_photos, 
+                                                            prix, 
+                                                            surface) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""", data)
+                        
+                        result[cur.lastrowid] = [annonce.idannonce, annonce.typedebien, annonce.typedetransaction, annonce.codepostal, annonce.ville, annonce.etage, annonce.idtypechauffage, annonce.idtypecuisine, annonce.naturebien, annonce.si_balcon, annonce.nb_chambres, annonce.nb_pieces, annonce.si_sdbain, annonce.si_sdEau, annonce.nb_photos, annonce.prix, annonce.surface]
+    cur.close()
+    conn.commit()                    
+    close_connection(cur)                    
+    
+    
+    return jsonify(result)
+
+
+
+
+@app.route('/get',methods=['GET'])
+def get_biens():
+    cur = get_db().cursor()
+    cur.execute("""SELECT * FROM SeLoger""")
+    bien = cur.fetchall()
+    cur.close()
+                        
+    close_connection(cur)
+
+    return jsonify(bien)
 if __name__ == '__main__':
     url = 'http://127.0.0.1:5000' 
     webbrowser.open_new(url)
