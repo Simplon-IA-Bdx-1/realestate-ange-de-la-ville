@@ -1,0 +1,14 @@
+{
+    "etage" : 3, 
+    "si_balcon": 1, 
+    "nb_chambres": 4,
+    "nb_pieces": 5, 
+    "si_sdbain": 1, 
+    "si_sdEau": 1, 
+    "surface": 100, 
+    "typedebien" : "Appartement", 
+    "typedetransaction" : "['Vente']", 
+    "idtypechauffage": "individuel" ,
+    "idtypecuisine": "coin cuisine",
+    "codepostal": 33000
+}
