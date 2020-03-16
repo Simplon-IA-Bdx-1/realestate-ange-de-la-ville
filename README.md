@@ -4,18 +4,17 @@
 # Realestate Ange de la ville 
 
 Ce projet a pour objectif de prédire le prix de vente de bien immobilier. 
-Dans un premier temps, nous nous sommes concentrées sur les maisons et les appartements à Bordeaux. 
-Nous avons décidé de scrapper le site se loger.com, ce dernier ayant des protection anti-scrapping nous avons utilisé sélénium afin de pouvoir imiter le comportement d'un utilisateur humain afin de ne pas être repérer.
+Dans un premier temps, nous nous sommes concentré sur les maisons et les appartements à Bordeaux. 
+Nous avons décidé de scrapper le site seloger.com, ce dernier ayant des protections anti-scrapping nous avons utilisé sélénium afin de pouvoir imiter le comportement d'un utilisateur humain afin de ne pas être repéré.
 Nous avons ainsi rassemblé les caractéristiques de 847 maisons et 728 appartements sur Bordeaux.
 Nous avons ensuite construit le modèle regressor de sklearn en utilisant un pipeline pour la préparation des données.
-Le modèle a ensuite été exporter sous fourme de pickle et déployer dans une application Flask.
-On utilise SQLite3 pour avoir une BDD sous forme de fichier .db directement sur le site. 
+Le modèle a ensuite été exporté sous forme de pickle et déployé dans une application Flask.
 L'application flask permet d'obtenir le prix estimé d'un bien immobilier sur Bordeaux. 
 La prédiction peut être obtenu de deux manières :
 * Via un formulaire web
-* Au format json via une API (Les informations sur le bien doivent être fournis au format json) 
+* Au format json via une API (Les informations sur le bien doivent être fournies au format json) 
 
-## Répartission des tâches 
+## Répartition des tâches 
 Avant le premier mois en entreprise :
 * Maud : README + modele
 * Christophe : Scrapping
@@ -24,9 +23,9 @@ Avant le premier mois en entreprise :
 Pour la suite :
 
 * Maxime : optimisation du scrapping et enregistrement en BDD
-* Maud : application Flask et cURL
+* Maud : application Flask, cURL
 * Corantin : Azure Function
-* Christophe : Scrapping et Tarifs Azure
+
 
 ## Features modèle et prédiction
 
@@ -74,7 +73,7 @@ idannonce |  int  |
 |     Application Flask    |      [App](https://github.com/Simplon-IA-Bdx-1/realestate-ange-de-la-ville/tree/master/app)      |     :---:      |     Application web et API      |
 |     Class Annonce    |      [Class Annonce](https://github.com/Simplon-IA-Bdx-1/realestate-ange-de-la-ville/blob/master/app/annonce.py)      |     :---:      |     Class annonce pour l'import en BDD     |
 |     Class Bien   |      [Class Bien](https://github.com/Simplon-IA-Bdx-1/realestate-ange-de-la-ville/blob/master/app/bien.py)      |     :---:      |     Class protegée Bien pour la prédiction     |
-
+|     :---:    |      :---:      |     :---:      |     Class protegé Bien pour la prédiction      |
 
 
 ## Organisation de l'application Flask
@@ -87,7 +86,7 @@ idannonce |  int  |
 
 ## Exemple de requête cURL
 
-Pour une prédiction les information du bien doivent être fournis au format json.
+Pour une prédiction les informations du bien doivent être fournies au format json.
 Fichier exemple : [data.json](https://github.com/Simplon-IA-Bdx-1/realestate-ange-de-la-ville/blob/master/app/data.json)
 
 ```bash
@@ -97,7 +96,7 @@ Fichier exemple : [data.json](https://github.com/Simplon-IA-Bdx-1/realestate-ang
 
 ## Installation
 
-Pour cloner le repo sur votre machine, tapez dans ton terminal :
+Pour cloner le repo sur votre machine, tapez dans votre terminal :
 
 ```bash
   $ git clone https://github.com/Simplon-IA-Bdx-1/realestate-ange-de-la-ville.git
