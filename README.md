@@ -14,17 +14,7 @@ La prédiction peut être obtenu de deux manières :
 * Via un formulaire web
 * Au format json via une API (Les informations sur le bien doivent être fournies au format json) 
 
-## Répartition des tâches 
-Avant le premier mois en entreprise :
-* Maud : README + modele
-* Christophe : Scrapping
-* Maxime & Corantin : BDD
 
-Pour la suite :
-
-* Maxime : optimisation du scrapping et enregistrement en BDD
-* Maud : application Flask, cURL
-* Corantin : Azure Function
 
 
 ## Features modèle et prédiction
@@ -36,18 +26,18 @@ idannonce |  int  |
 | typedetransaction |  object  | "['vente de prestige']",  "['vente']" |
 | codepostal |  int  |  33000, 33100, 33200, 33300, 33700, 33800 |
 | ville |  object  |
-| etage |  int  | 0 > ... < 30 |
+| etage |  int  | 0 < ... < 30 |
 | idtypechauffage |  object  | "individuel", "individuel électrique", "individuel électrique radiateur", "gaz","individuel électrique","mixte","électrique", "individuel gaz sol", "gaz radiateur", "électrique mixte" |  
 | idtypecuisine |  object  | "aucune", "coin cuisine", "équipée", "séparée", "séparée équipée", "américaine", "américaine équipée" |
 | naturebien |  int  | 0, 1 |
 | si_balcon |  int  | 0, 1 |
-| nb_chambres |  int  | 0 > ... < 10 |
-| nb_pieces |  int  | 0 > ... < 10 |
+| nb_chambres |  int  | 0 < ... < 10 |
+| nb_pieces |  int  | 0 < ... < 10 |
 | si_sdbain |  int  | 0, 1 |
 | si_sdEau |  int | 0, 1 |
 | nb_photos |  int  |
 | prix |  int  |
-| surface |  int  | 0 > ... < 900 |
+| surface |  int  | 0 < ... < 900 |
 | dpeL |  int  |
 | dpeC|  int  |
 
@@ -76,21 +66,64 @@ idannonce |  int  |
 
 
 ## Organisation de l'application Flask
+### Pages public
+* Accueil du site et formulaire de prédiction : [http://localhost:5000/](http://localhost:5000/)
+* Affichage de la prédiction : [http://localhost:5000/predict](http://localhost:5000/predict)
 
-* Prédiction : [http://localhost:5000/predict](http://localhost:5000/predict)
+### Page nécessitant une clè d'authentification  
 * Création de la table SeLoger : [http://localhost:5000/create-table](http://localhost:5000/create-table)
 * Import des données depuis csv : [http://localhost:5000/import](http://localhost:5000/import)
-* Affichage en json des annonce présente dans la Base de Données  : [http://localhost:5000/get](http://localhost:5000/get)
+* Page d'entrainement du modèle : [http://localhost:5000/train-model](http://localhost:5000/train-model)
+* Retour en json des annonces présentent dans la Base de Données  : [http://localhost:5000/get-biens](http://localhost:5000/get-biens)
+* Retour en json des logs de prédiction  : [http://localhost:5000/get-logs](http://localhost:5000/get-logs)
+* Retour en json des modèles de prédiction  : [http://localhost:5000/get-models](http://localhost:5000/get-models)
+* Affichage des Annonces sous forme de tableau  : : [http://localhost:5000/list](http://localhost:5000/list)
+* Affichage des logs de prédiction sous forme de tableau : [http://localhost:5000/list-logs](http://localhost:5000/list-logs)
+* Affichage des Modèles sous forme de tableau  : [http://localhost:5000/list-models](http://localhost:5000/list-models)
 
 
 ## Exemple de requête cURL
 
 Pour une prédiction les informations du bien doivent être fournies au format json.
+
 Fichier exemple : [data.json](https://github.com/Simplon-IA-Bdx-1/realestate-ange-de-la-ville/blob/master/app/data.json)
 
 ```bash
  $ curl -d "@data.json" -X POST http://localhost:5000/predict -H "Content-Type: application/json"
 ```
+
+Obtenir les informations des modèles
+```bash
+curl -X GET http://localhost:5000/get-models?key=5453213761213547681243576
+```
+
+Obtenir les informations des prédiction effectués
+
+```bash
+curl -X GET http://localhost:5000/get-logs?key=5453213761213547681243576
+```
+
+Obtenir les informations des annonces utilisées pour entrainer les modèles
+
+```bash
+curl -X GET http://localhost:5000/get-biens?key=5453213761213547681243576
+```
+
+Créer les tables de la base de données
+
+```bash
+curl -X GET http://localhost:5000/create-table?key=5453213761213547681243576
+```
+Importer les annonces depuis un csv présent sur le site
+```bash
+curl -X GET http://localhost:5000/import?key=5453213761213547681243576
+```
+Entrainer un modèle à partir d'un csv présent sur le site
+
+```bash
+curl -X GET http://localhost:5000/train-model?key=5453213761213547681243576
+```
+
 
 
 ## Installation
@@ -104,9 +137,9 @@ Pour cloner le repo sur votre machine, tapez dans votre terminal :
 Ensuite vous pourrez installer et utiliser Jupyter dans l'environnement *conda* avec la commande suivante :
 
 ```bash
-  $ conda env create -f anges.yml && conda activate anges && jupyter notebook --no-browser
+  $ conda env create -f anges.yml && conda activate anges
 ```
 
-Conda installera les librairies nécessaires et sélectionnera le nouvel environnement, puis l'application jupyter notebook sera lancée.
+Conda installera les librairies nécessaires et sélectionnera le nouvel environnement.
 
 
