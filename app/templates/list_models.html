@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>Ange de la ville - Logs Prédiction</title>
+    <style>
+    #parallax-image{
+      background-image: url("/static/bordeaux.jpg");
+      height: 500px;
+      margin-bottom: 50px;
+      background-attachment: fixed;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+
+
+    }
+    #form-contenaire{
+      background-color: black;
+      opacity: 0.80;
+
+      padding-top: 20px;
+      padding-bottom: 20px;
+      animation: 3s ease-in 1s reverse both running slidein;
+    }
+    form{
+      
+   
+       
+      float: none;
+      margin: 0 auto; 
+    }
+    label{
+      color: blanchedalmond;
+    }
+    input{
+      opacity: 1;
+    }
+    select{
+      opacity: 1;
+    }
+    h1{
+        color: blanchedalmond;
+
+    }
+    h3{
+        color: blanchedalmond;
+
+    }
+    h2{
+        color:blanchedalmond; 
+    }
+    </style>
+  </head>
+  <body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Ange de la ville</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/">Nouvelle prédiction</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <div id="parallax-image">
+        
+        <div class="w-100 center">
+            <p class="text-center"><img src="{{url_for('static', filename='ange1_300.png')}}" /></p>
+            <h1 class="text-center">Modèle</h1>
+            
+          </div>
+                
+
+      </div>
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Id Modèle</th>
+                      <th>R2</th>
+                      <th>MAE</th>
+                      <th>RMSE</th>
+                      <th>Date de création</th>
+                      <th>Nom</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for row in rows %}
+                    <tr>
+                        <td>{{row[0]}}</td>
+                        <td>{{row[1]}}</td>
+                        <td>{{row[2]}}</td>
+                        <td>{{row[3]}}</td>
+                        <td>{{row[4]}}</td>
+                        <td>{{row[5]}}</td>
+                        <td>{{row[6]}}</td>
+                    </tr>
+
+                    {% endfor %}
+                  </tbody>
+                </table>
+                
+              
+     
+    
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  </body>
+</html>
