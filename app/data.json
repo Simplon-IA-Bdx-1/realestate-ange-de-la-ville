@@ -1,4 +1,5 @@
-{
+{   "object" : "prediction",
+    "biens" : [ {
     "etage" : 3, 
     "si_balcon": 1, 
     "nb_chambres": 4,
@@ -11,4 +12,33 @@
     "idtypechauffage": "individuel" ,
     "idtypecuisine": "coin cuisine",
     "codepostal": 33000
+    },
+    {
+        "etage" : 4, 
+        "si_balcon": 1, 
+        "nb_chambres": 4,
+        "nb_pieces": 6, 
+        "si_sdbain": 1, 
+        "si_sdEau": 1, 
+        "surface": 50, 
+        "typedebien" : "Appartement", 
+        "typedetransaction" : "['Vente']", 
+        "idtypechauffage": "individuel" ,
+        "idtypecuisine": "coin cuisine",
+        "codepostal": 33200
+        },
+         {
+            "etage" : 5, 
+            "si_balcon": 1, 
+            "nb_chambres": 4,
+            "nb_pieces": 6, 
+            "si_sdbain": 1, 
+            "si_sdEau": 1, 
+            "surface": 90, 
+            "typedebien" : "Appartement", 
+            "typedetransaction" : "['Vente']", 
+            "idtypechauffage": "individuel" ,
+            "idtypecuisine": "coin cuisine",
+            "codepostal": 33700
+            }]
 }

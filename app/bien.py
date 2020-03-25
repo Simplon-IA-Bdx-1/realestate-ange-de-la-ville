@@ -31,10 +31,10 @@ class Bien:
     def set_typedebien(self, value):
         "Renvoie une variable contenant la valeur de typedebien pour le bien "
         if (value == "Appartement") | (value == "Maison / Villa") :
-            self._typedebien = "Appartement"
+            self._typedebien = value
 
         else:
-            self._typedebien = 0
+            self._typedebien = "Appartement"
         return(self._typedebien)
 
 
@@ -94,7 +94,7 @@ class Bien:
 
     def set_nb_chambres(self, value):
         "Renvoie une variable contenant la valeur de nb_chambres pour le bien "
-        if (int(value) >= 0) | (int(value)<= 10 ):
+        if (int(value) >= 0) | (int(value) <= 10 ):
             self._nb_chambres = int(value)
         else:
             self._nb_chambres = 0
