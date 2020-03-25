@@ -8,7 +8,55 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
-    <title>SeLogerML - Prédiction</title>
+    <title>Ange de la ville - Logs Prédiction</title>
+    <style>
+    #parallax-image{
+      background-image: url("/static/bordeaux.jpg");
+      height: 500px;
+      margin-bottom: 50px;
+      background-attachment: fixed;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+
+
+    }
+    #form-contenaire{
+      background-color: black;
+      opacity: 0.80;
+
+      padding-top: 20px;
+      padding-bottom: 20px;
+      animation: 3s ease-in 1s reverse both running slidein;
+    }
+    form{
+      
+   
+       
+      float: none;
+      margin: 0 auto; 
+    }
+    label{
+      color: blanchedalmond;
+    }
+    input{
+      opacity: 1;
+    }
+    select{
+      opacity: 1;
+    }
+    h1{
+        color: blanchedalmond;
+
+    }
+    h3{
+        color: blanchedalmond;
+
+    }
+    h2{
+        color:blanchedalmond; 
+    }
+    </style>
   </head>
   <body>
 
@@ -26,113 +74,95 @@
           </ul>
         </div>
       </nav>
-
-
-
-    <div class="row" class="col-md-12">
-        
-        <div class="col-md-7">
-          <form action="./predict" method="post" class="col-sm-9">
-            <div class="form-group">
-              <label for="typedebien" class="col-sm-4 col-form-label">Type de bien :</label>
-              <div class="col-sm-8">
-                <select name="typedebien" class="form-control">
-                  <option value="Appartement" selected>Appartement</option>
-                  <option value="Maison / Villa">Maison / Villa</option>
-                </select>
-              </div>
-            </div>
-
-
-            <div class="form-group">
-                <label for="typedetransaction" class="col-sm-4 col-form-label">Type de transaction :</label>
-                <div class="col-sm-8">
-                    <select name="typedetransaction" class="form-control">
-                        <option value="['vente de prestige']">Vente de prestige</option>
-                        <option value="['vente']">Vente</option>
-                    </select>
+      <div id="parallax-image">
+        <div class="container py-5">
+          <div class="row h-100" id="form-contenaire">
+            <form action="./predict" method="post" class="col-md-10 center">
+              <div class="form-group row">
+                <div class="col-sm-6">
+                  <label for="typedebien">Type de bien :</label>
+                  <select name="typedebien" class="form-control">
+                    <option value="Appartement" selected>Appartement</option>
+                    <option value="Maison / Villa">Maison / Villa</option>
+                  </select>
                 </div>
-            </div>
 
-            <div class="form-group">
-              <label for="codepostal" class="col-sm-4 col-form-label">Code Postal</label>
-              <div class="col-sm-8">
-                <select name="codepostal" class="form-control">
-                  <option value="33000">33000</option>
-                  <option value="33100">33100</option>
-                  <option value="33000">33200</option>
-                  <option value="33100">33300</option>
-                  <option value="33000">33800</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="surface" class="col-sm-4 col-form-label">Surface</label>
-              <div class="col-sm-8">
-                <input type="number" class="form-control" name="surface">
-              </div>
-            </div>
-            
-
-            <div class="form-group">
-                <label for="etage" class="col-sm-4 col-form-label">Etage</label>
-                <div class="col-sm-8">
-                  
-                  <input type="number" class="form-control" name="etage">
-                  
-                </div>
-            </div>
-
-
-            <div class="form-group">
-              <label for="nb_pieces" class="col-sm-4 col-form-label">Nombre de pièces</label>
-              <div class="col-sm-8">
-                <select name="nb_pieces" class="form-control">
-                  <option value="1" selected>1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="8">5</option>
-                  <option value="6">6</option>
-                  <option value="7">7</option>
-                  <option value="8">8</option>
-                  <option value="8">9</option>
-                  <option value="8">10</option>
-                </select>
-              </div>
-            </div>
-
-
-            <div class="form-group">
-                <label for="nb_chambres" class="col-sm-4 col-form-label">Nombre de chambres :</label>
-                <div class="col-sm-8">
-                  <select name="nb_chambres" class="form-control">
-                    <option value="0" selected>0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="8">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="8">9</option>
-                    <option value="8">10</option>
+                <div class="col-sm-6">
+                  <label for="typedetransaction">Type de transaction :</label>                  
+                  <select name="typedetransaction" class="form-control">
+                    <option value="['vente de prestige']">Vente de prestige</option>
+                    <option value="['vente']">Vente</option>
                   </select>
                 </div>
               </div>
+
+
+                <div class="form-group row">
+                  <div class="col-sm-6">
+                    <label for="codepostal">Code Postal</label>              
+                    <select name="codepostal" class="form-control">
+                      <option value="33000">33000</option>
+                      <option value="33100">33100</option>
+                      <option value="33000">33200</option>
+                      <option value="33100">33300</option>
+                      <option value="33000">33800</option>
+                    </select>
+                  </div>
+          
+
+                  <div class="col-sm-6">
+                    <label for="surface">Surface</label>
+                    <input type="number" class="form-control" name="surface">
+                  </div>
+                </div>
+            
+
+                <div class="form-group row">
+                  <div class="col-sm-6">
+                    <label for="etage">Etage</label>
+                    <input type="number" class="form-control" name="etage">                 
+                  </div>
+
+                  <div class="col-sm-6">
+                    <label for="nb_pieces">Nombre de pièces</label>
+                    <select name="nb_pieces" class="form-control">
+                      <option value="1" selected>1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="8">5</option>
+                      <option value="6">6</option>
+                      <option value="7">7</option>
+                      <option value="8">8</option>
+                      <option value="8">9</option>
+                      <option value="8">10</option>
+                    </select>
+                  </div>
+                </div>
+
+
+                <div class="form-group row">
+                  <div class="col-sm-6">
+                    <label for="nb_chambres">Nombre de chambres :</label>
+                    <select name="nb_chambres" class="form-control">
+                      <option value="0" selected>0</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="8">5</option>
+                      <option value="6">6</option>
+                      <option value="7">7</option>
+                      <option value="8">8</option>
+                      <option value="8">9</option>
+                      <option value="8">10</option>
+                    </select>
+                </div>
+             
               
-  
-  
-
-
-            <!-- <hr class="my-4">  -->
-
-            <div class="form-group">
-              <label for="idtypechauffage" class="col-sm-4 col-form-label">Type de Chauffage</label>
-              <div class="col-sm-8">
-                <select name="idtypechauffage" class="form-control">
+                <div class="col-sm-6">
+                  <label for="idtypechauffage">Type de Chauffage</label>             
+                  <select name="idtypechauffage" class="form-control">
                     <option value="individuel">Individuel électrique</option>
                     <option value="individuel électrique">Individuel électrique</option>
                     <option value="individuel électrique radiateur">Individuel électrique radiateur</option>
@@ -143,14 +173,14 @@
                     <option value="individuel gaz sol">Individuel gaz sol</option>
                     <option value="gaz radiateur">Gaz radiateur</option>
                     <option value="électrique mixte">Electrique mixte</option>
-                </select>
+                  </select>
+                </div>
               </div>
-            </div>
 
-            <div class="form-group">
-              <label for="idtypecuisine" class="col-sm-4 col-form-label">Cuisine</label>
-              <div class="col-sm-8">
-                <select name="idtypecuisine" class="form-control">
+              <div class="form-group row">
+                <div class="col-sm-6">
+                  <label for="idtypecuisine">Cuisine</label>
+                  <select name="idtypecuisine" class="form-control">
                     <option value="aucune">Aucune</option>
                     <option value="coin cuisine">Coin cuisine</option>
                     <option value="équipée">équipée</option>
@@ -158,58 +188,42 @@
                     <option value="	séparée équipée">Séparée équipée</option>
                     <option value="américaine">américaine</option>
                     <option value="américaine équipée">américaine équipée</option>
-                </select>
-              </div>
-            </div>
+                  </select>
+                </div>
 
-
-
-            <div class="form-group">
-                <label for="si_sdbain" class="col-sm-4 col-form-label">Salle de bain :</label>
-                <div class="col-sm-8">
+                <div class="col-sm-6">
+                  <label for="si_sdbain">Salle de bain :</label>
                   <select name="si_sdbain" class="form-control">
                     <option value="0" selected>Non</option>
                     <option value="1">Oui</option>
                   </select>
                 </div>
-            </div>
+              </div>
 
-
-            <div class="form-group">
-                <label for="si_sdEau" class="col-sm-4 col-form-label">Salle d'eau :</label>
-                <div class="col-sm-8">
+              <div class="form-group row">
+                <div class="col-sm-6">
+                  <label for="si_sdEau">Salle d'eau :</label>
                   <select name="si_sdEau" class="form-control">
                     <option value="0" selected>Non</option>
                     <option value="1">Oui</option>
                   </select>
                 </div>
-            </div>
-
-
-            <div class="form-group">
-              <label for="si_balcon" class="col-sm-4 col-form-label">Balcon :</label>
-              <div class="col-sm-8">
-                <select name="si_balcon" class="form-control">
-                  <option value="0" selected>Non</option>
-                  <option value="1">Oui</option>
-                </select>
+                
+                <div class="col-sm-6">
+                  <label for="si_balcon">Balcon :</label>
+                  <select name="si_balcon" class="form-control">
+                    <option value="0" selected>Non</option>
+                    <option value="1">Oui</option>
+                  </select>
+                </div>
               </div>
-            </div>
 
 
 
-            <button type="submit" class="btn btn-secondary">Estimer le prix du bien</button>
+            <button type="submit" class="btn btn-outline-light">Estimer le prix du bien</button>
           </form>
-
-          
+          </div>
         </div>
-        
-            <div class="col-md-5">
-                <h3 class="text-center">{{ prediction_text }}</h3>
-                <h2 class="text-center">{{ prediction_prix }}</h2>
-            </div>
-    
-          
       </div>
     
 
