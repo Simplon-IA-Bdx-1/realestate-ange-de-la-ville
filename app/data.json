@@ -1,4 +1,4 @@
-{   "object" : "prediction",
+{   
     "biens" : [ {
     "etage" : 3, 
     "si_balcon": 1, 
